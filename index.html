@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário Personal Trainer – App de Treino</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141417;
+    --surface2: #1c1c21;
+    --border: #2a2a32;
+    --accent: #c8f135;
+    --accent2: #5be9b9;
+    --text: #f0f0f0;
+    --muted: #6b6b7e;
+    --danger: #ff5a5a;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,241,53,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,241,53,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 48px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(200,241,53,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(200,241,53,0.25);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 500px;
+    font-weight: 300;
+  }
+
+  /* Progress */
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: none; }
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(200,241,53,0.2);
+  }
+
+  .question-label {
+    font-weight: 500;
+    margin-bottom: 14px;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .question-label .req {
+    color: var(--accent);
+    margin-left: 3px;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: -10px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  /* Input / Textarea */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200,241,53,0.08);
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* Radio / Checkbox grid */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .option-item {
+    position: relative;
+  }
+
+  .option-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .option-item label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    cursor: pointer;
+    font-size: 13.5px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .option-item label::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--muted);
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option-item input[type="radio"] + label::before {
+    border-radius: 50%;
+  }
+
+  .option-item input:checked + label {
+    border-color: var(--accent);
+    background: rgba(200,241,53,0.07);
+    color: var(--accent);
+  }
+
+  .option-item input:checked + label::before {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Importance scale */
+  .scale-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .scale-feature {
+    font-size: 13.5px;
+    flex: 1;
+    color: #ccc;
+  }
+
+  .scale-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .scale-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scale-dot:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .scale-dot.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .scale-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding: 0 2px;
+  }
+
+  /* Price slider */
+  .price-display {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .price-display span { font-size: 18px; font-weight: 400; opacity: 0.6; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) var(--pct, 40%), var(--border) var(--pct, 40%));
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(200,241,53,0.15);
+    transition: box-shadow 0.2s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 7px rgba(200,241,53,0.18);
+  }
+
+  .price-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Not important section */
+  .not-important-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  /* Submit button */
+  .submit-wrap {
+    text-align: center;
+    padding-top: 16px;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-transform: uppercase;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(200,241,53,0.2);
+  }
+
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* Success */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .success-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+  }
+
+  .success-screen h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  .success-screen p { color: var(--muted); }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0 20px;
+  }
+
+  @media (max-width: 520px) {
+    .scale-dots { gap: 4px; }
+    .scale-dot { width: 24px; height: 24px; font-size: 10px; }
+    .options-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="badge">📋 Pesquisa de produto</div>
+    <h1>O app ideal para <span>Personal Trainers</span></h1>
+    <p class="subtitle">Leva menos de 4 minutos. Suas respostas vão moldar o produto — cada detalhe conta.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <form id="surveyForm">
+
+    <!-- SEÇÃO 1: Perfil -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">1</div>
+        <div class="section-title">Seu perfil</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Nome completo <span class="req">*</span></div>
+        <input type="text" name="nome" placeholder="Ex: João Silva" required>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Quantos alunos você atende hoje? <span class="req">*</span></div>
+        <div class="options-grid">
+          <div class="option-item"><input type="radio" name="alunos" id="a1" value="1-5" required><label for="a1">1 – 5 alunos</label></div>
+          <div class="option-item"><input type="radio" name="alunos" id="a2" value="6-15"><label for="a2">6 – 15 alunos</label></div>
+          <div class="option-item"><input type="radio" name="alunos" id="a3" value="16-30"><label for="a3">16 – 30 alunos</label></div>
+          <div class="option-item"><input type="radio" name="alunos" id="a4" value="30+"><label for="a4">Mais de 30</label></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Você já usa algum app ou ferramenta para passar treinos? <span class="req">*</span></div>
+        <div class="options-grid">
+          <div class="option-item"><input type="radio" name="usa_app" id="u1" value="sim" required><label for="u1">Sim</label></div>
+          <div class="option-item"><input type="radio" name="usa_app" id="u2" value="nao"><label for="u2">Não, faço manual</label></div>
+          <div class="option-item"><input type="radio" name="usa_app" id="u3" value="misto"><label for="u3">Misto (app + papel)</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 2: O que é essencial -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">2</div>
+        <div class="section-title">Funcionalidades essenciais</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Quais recursos são <strong>indispensáveis</strong> para você? <span class="req">*</span></div>
+        <p class="hint">Marque todas que se aplicam</p>
+        <div class="options-grid">
+          <div class="option-item"><input type="checkbox" name="essencial" id="e1" value="montagem_treino"><label for="e1">🏋️ Montagem de treino</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e2" value="envio_aluno"><label for="e2">📤 Envio direto ao aluno</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e3" value="videos_exercicios"><label for="e3">🎥 Vídeos dos exercícios</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e4" value="acompanhamento_evolucao"><label for="e4">📈 Acompanhar evolução</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e5" value="agendamento"><label for="e5">📅 Agendamento de aulas</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e6" value="anamnese"><label for="e6">📋 Ficha de anamnese</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e7" value="historico_treinos"><label for="e7">🗂️ Histórico de treinos</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e8" value="chat_aluno"><label for="e8">💬 Chat com o aluno</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e9" value="cobranca"><label for="e9">💳 Cobrança / pagamentos</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e10" value="relatorios"><label for="e10">📊 Relatórios de desempenho</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e11" value="nutricao"><label for="e11">🥗 Plano nutricional</label></div>
+          <div class="option-item"><input type="checkbox" name="essencial" id="e12" value="banco_exercicios"><label for="e12">🔍 Banco de exercícios</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 3: Grau de importância -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">3</div>
+        <div class="section-title">Grau de importância</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Avalie a importância de cada item <span class="req">*</span></div>
+        <p class="hint">1 = Nada importante &nbsp;|&nbsp; 5 = Indispensável</p>
+
+        <div class="scale-legend">
+          <span>Nada importante</span>
+          <span>Indispensável</span>
+        </div>
+        <hr class="divider">
+
+        <div id="scaleRows">
+          <!-- Gerado por JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 4: O que NÃO é essencial -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">4</div>
+        <div class="section-title">O que não é prioridade</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Quais recursos você <strong>não considera importantes</strong> no início? <span class="req">*</span></div>
+        <p class="hint">Ser honesto aqui é tão valioso quanto a pergunta anterior</p>
+        <div class="not-important-grid">
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n1" value="nutricao"><label for="n1">🥗 Plano nutricional</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n2" value="gamificacao"><label for="n2">🏆 Gamificação / ranking</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n3" value="ia_exercicios"><label for="n3">🤖 Sugestão por IA</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n4" value="marketplace"><label for="n4">🛒 Marketplace de treinos</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n5" value="live_streaming"><label for="n5">📡 Aulas ao vivo</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n6" value="comunidade"><label for="n6">👥 Comunidade / fórum</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n7" value="wearables"><label for="n7">⌚ Integração wearables</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n8" value="relatorios_avancados"><label for="n8">📊 Relatórios avançados</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n9" value="multi_personal"><label for="n9">👨‍💼 Gestão de equipe</label></div>
+          <div class="option-item"><input type="checkbox" name="nao_essencial" id="n10" value="blog_conteudo"><label for="n10">✍️ Blog / conteúdo</label></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Na sua opinião, qual é o maior problema dos apps de treino atuais?</div>
+        <textarea name="problema_atual" placeholder="Ex: São complicados demais, o aluno não consegue usar sozinho..."></textarea>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 5: Preço -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">5</div>
+        <div class="section-title">Precificação</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Quanto você pagaria por mês por um app completo? <span class="req">*</span></div>
+        <p class="hint">Considere que o app substitui planilhas, PDFs e outras ferramentas</p>
+
+        <div class="price-display"><span>R$</span> <span id="priceVal">79</span><span>/mês</span></div>
+        <input type="range" id="priceSlider" name="preco" min="19" max="299" value="79" step="10"
+          oninput="updatePrice(this.value)">
+        <div class="price-labels"><span>R$ 19</span><span>R$ 299</span></div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Qual modelo de cobrança prefere? <span class="req">*</span></div>
+        <div class="options-grid">
+          <div class="option-item"><input type="radio" name="modelo" id="m1" value="mensal" required><label for="m1">📆 Mensal</label></div>
+          <div class="option-item"><input type="radio" name="modelo" id="m2" value="anual"><label for="m2">📅 Anual com desconto</label></div>
+          <div class="option-item"><input type="radio" name="modelo" id="m3" value="por_aluno"><label for="m3">👤 Por nº de alunos</label></div>
+          <div class="option-item"><input type="radio" name="modelo" id="m4" value="freemium"><label for="m4">🆓 Freemium + extras</label></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">O que te faria assinar <em>na hora</em>, sem pensar duas vezes?</div>
+        <textarea name="decisao_compra" placeholder="Ex: Teste grátis de 30 dias, importar meus treinos de outra plataforma..."></textarea>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 6: Final -->
+    <div class="section">
+      <div class="section-label">
+        <div class="section-num">6</div>
+        <div class="section-title">Considerações finais</div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Qual dispositivo você mais usaria para gerenciar treinos? <span class="req">*</span></div>
+        <div class="options-grid">
+          <div class="option-item"><input type="radio" name="dispositivo" id="d1" value="celular" required><label for="d1">📱 Celular</label></div>
+          <div class="option-item"><input type="radio" name="dispositivo" id="d2" value="computador"><label for="d2">💻 Computador</label></div>
+          <div class="option-item"><input type="radio" name="dispositivo" id="d3" value="ambos"><label for="d3">Ambos igualmente</label></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Tem alguma sugestão ou funcionalidade que ainda não viu em nenhum app?</div>
+        <textarea name="sugestao_livre" placeholder="Espaço livre para sua ideia mais ousada..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="question-label">Posso te contatar para uma conversa rápida sobre o app? (opcional)</div>
+        <input type="email" name="email_contato" placeholder="seu@email.com">
+        <p class="hint" style="margin-top:8px;">Só usamos para follow-up. Zero spam.</p>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit">
+        Enviar respostas ✦
+      </button>
+    </div>
+
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✦</div>
+    <h2>Obrigado, personal!</h2>
+    <p>Suas respostas foram registradas.<br>Você vai ser um dos primeiros a testar o app.</p>
+  </div>
+</div>
+
+<script>
+  // Scale rows
+  const scaleItems = [
+    "Montagem e envio de treinos",
+    "Vídeos demonstrativos dos exercícios",
+    "Acompanhamento de evolução do aluno",
+    "Agendamento de sessões",
+    "Comunicação direta com o aluno",
+    "Ficha de anamnese digital",
+    "Cobrança / gestão financeira",
+    "Banco de exercícios customizável",
+  ];
+
+  const scaleContainer = document.getElementById('scaleRows');
+  scaleItems.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'scale-row';
+    row.innerHTML = `
+      <span class="scale-feature">${item}</span>
+      <div class="scale-dots">
+        ${[1,2,3,4,5].map(n => `
+          <button type="button" class="scale-dot" data-group="scale_${i}" data-val="${n}"
+            onclick="selectDot(this)">${n}</button>
+        `).join('')}
+      </div>
+    `;
+    scaleContainer.appendChild(row);
+    if (i < scaleItems.length - 1) {
+      const hr = document.createElement('hr');
+      hr.className = 'divider';
+      scaleContainer.appendChild(hr);
+    }
+  });
+
+  function selectDot(btn) {
+    const group = btn.dataset.group;
+    document.querySelectorAll(`[data-group="${group}"]`).forEach(d => d.classList.remove('selected'));
+    btn.classList.add('selected');
+    updateProgress();
+  }
+
+  // Price slider
+  function updatePrice(val) {
+    document.getElementById('priceVal').textContent = val;
+    const slider = document.getElementById('priceSlider');
+    const min = +slider.min, max = +slider.max;
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+  }
+  updatePrice(79);
+
+  // Progress
+  function updateProgress() {
+    const required = document.querySelectorAll('[required]');
+    let filled = 0;
+    const checkedGroups = new Set();
+    required.forEach(el => {
+      if (el.type === 'radio' || el.type === 'checkbox') {
+        if (el.checked) checkedGroups.add(el.name);
+      } else if (el.value.trim()) filled++;
+    });
+    const radioNames = new Set([...required].filter(e => e.type==='radio').map(e=>e.name));
+    filled += checkedGroups.size;
+    const total = [...required].filter(e=>e.type!=='radio'&&e.type!=='checkbox').length + radioNames.size;
+    const pct = Math.min(100, Math.round((filled / total) * 100));
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('change', updateProgress);
+    el.addEventListener('input', updateProgress);
+  });
+
+  // Submit → Google Sheets
+  document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    const form = e.target;
+    const data = {};
+
+    // Campos de texto, email, range
+    form.querySelectorAll('input[type=text], input[type=email], textarea, input[type=range]')
+      .forEach(el => { if (el.name) data[el.name] = el.value; });
+
+    // Radios
+    form.querySelectorAll('input[type=radio]:checked')
+      .forEach(el => { data[el.name] = el.value; });
+
+    // Checkboxes (múltiplos separados por vírgula)
+    const cbGroups = {};
+    form.querySelectorAll('input[type=checkbox]:checked').forEach(el => {
+      cbGroups[el.name] = cbGroups[el.name] ? cbGroups[el.name] + ', ' + el.value : el.value;
+    });
+    Object.assign(data, cbGroups);
+
+    // Escala de importância
+    document.querySelectorAll('[data-group].selected').forEach(btn => {
+      data[btn.dataset.group] = btn.dataset.val;
+    });
+
+    data.timestamp = new Date().toLocaleString('pt-BR');
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbyQLvzr1CleYjngP0pISKT__M5WPpDFi_P-S6AcVAelyYn2S99Ysq3DPuE8Z2pexP8-PA/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(data)
+      });
+    } catch(err) {
+      console.error('Erro ao enviar:', err);
+    }
+
+    form.style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    document.getElementById('progressFill').style.width = '100%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

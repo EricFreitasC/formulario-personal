@@ -7,15 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0f;
-    --surface: #141417;
-    --surface2: #1c1c21;
-    --border: #2a2a32;
-    --accent: #c8f135;
-    --accent2: #5be9b9;
+    --bg: #121212;
+    --surface: #1E1E1E;
+    --surface2: #272727;
+    --border: #333333;
+    --accent: #FF3B3B;
+    --accent2: #00E676;
     --text: #f0f0f0;
-    --muted: #6b6b7e;
-    --danger: #ff5a5a;
+    --muted: #6b6b6b;
+    --danger: #FF3B3B;
     --radius: 12px;
   }
 
@@ -36,8 +36,8 @@
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(200,241,53,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,241,53,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(255,59,59,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,59,59,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
     z-index: 0;
@@ -58,9 +58,9 @@
 
   .badge {
     display: inline-block;
-    background: rgba(200,241,53,0.12);
+    background: rgba(255,59,59,0.12);
     color: var(--accent);
-    border: 1px solid rgba(200,241,53,0.25);
+    border: 1px solid rgba(255,59,59,0.25);
     font-family: 'Syne', sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -138,11 +138,7 @@
     width: 28px;
     height: 28px;
     background: var(--accent);
-    color: #000;
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    border-radius: 50%;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -213,7 +209,7 @@
 
   input:focus, textarea:focus, select:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(200,241,53,0.08);
+    box-shadow: 0 0 0 3px rgba(255,59,59,0.08);
   }
 
   textarea { resize: vertical; min-height: 90px; }
@@ -269,7 +265,7 @@
 
   .option-item input:checked + label {
     border-color: var(--accent);
-    background: rgba(200,241,53,0.07);
+    background: rgba(255,59,59,0.07);
     color: var(--accent);
   }
 
@@ -323,7 +319,7 @@
   .scale-dot.selected {
     background: var(--accent);
     border-color: var(--accent);
-    color: #000;
+    color: #fff;
   }
 
   .scale-legend {
@@ -366,12 +362,12 @@
     height: 22px;
     background: var(--accent);
     border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(200,241,53,0.15);
+    box-shadow: 0 0 0 4px rgba(255,59,59,0.15);
     transition: box-shadow 0.2s;
   }
 
   input[type="range"]::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 0 7px rgba(200,241,53,0.18);
+    box-shadow: 0 0 0 7px rgba(255,59,59,0.18);
   }
 
   .price-labels {
@@ -400,11 +396,10 @@
     align-items: center;
     gap: 10px;
     background: var(--accent);
-    color: #000;
+    color: #fff;
     font-family: 'Syne', sans-serif;
     font-size: 14px;
     font-weight: 800;
-    letter-spacing: 0.5px;
     padding: 16px 40px;
     border: none;
     border-radius: 99px;
@@ -415,7 +410,7 @@
 
   .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(200,241,53,0.2);
+    box-shadow: 0 12px 30px rgba(255,59,59,0.25);
   }
 
   .btn-submit:active { transform: scale(0.98); }
@@ -438,7 +433,7 @@
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 10px;
-    color: var(--accent);
+    color: var(--accent2);
   }
 
   .success-screen p { color: var(--muted); }
